@@ -46,6 +46,8 @@ function ToastPlayground() {
                     onSubmit={(e) => {
                         e.preventDefault();
                         handleAddToast();
+                        setMessage("");
+                        setVariant(VARIANT_OPTIONS[0]);
                     }}
                 >
                     <div className={styles.row}>
