@@ -4,6 +4,8 @@ import Button from "../Button";
 
 import ToastShelf from "../ToastShelf/ToastShelf";
 
+import { ToastContext } from "../ToastProvider/ToastProvider";
+
 import styles from "./ToastPlayground.module.css";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
@@ -11,28 +13,28 @@ const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 function ToastPlayground() {
     const [message, setMessage] = React.useState("");
     const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
-    const [toasts, setToasts] = React.useState([]);
+    const { toasts, handleAddToast, handleRemoveToast } =
+        React.useContext(ToastContext);
 
-    function handleAddToast() {
-        const newKey = crypto.randomUUID();
-        const newToasts = [{ variant, message, uid: newKey }, ...toasts];
-        setToasts(newToasts);
-    }
+    // function handleAddToast() {
+    //     const newKey = crypto.randomUUID();
+    //     const newToasts = [{ variant, message, uid: newKey }, ...toasts];
+    //     setToasts(newToasts);
+    // }
 
-    function handleRemoveToast({ variant, message, uid }) {
-        const indexToRemove = toasts.findIndex(
-            (item) =>
-                item.variant === variant &&
-                item.message === message &&
-                item.uid === uid
-        );
-        const newToasts = [
-            ...toasts.slice(0, indexToRemove),
-            ...toasts.slice(indexToRemove + 1),
-        ];
-        console.log({ toasts, newToasts, indexToRemove });
-        setToasts(newToasts);
-    }
+    // function handleRemoveToast({ variant, message, uid }) {
+    //     const indexToRemove = toasts.findIndex(
+    //         (item) =>
+    //             item.variant === variant &&
+    //             item.message === message &&
+    //             item.uid === uid
+    //     );
+    //     const newToasts = [
+    //         ...toasts.slice(0, indexToRemove),
+    //         ...toasts.slice(indexToRemove + 1),
+    //     ];
+    //     setToasts(newToasts);
+    // }
 
     return (
         <div className={styles.wrapper}>
@@ -45,7 +47,7 @@ function ToastPlayground() {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        handleAddToast();
+                        handleAddToast(variant, message);
                         setMessage("");
                         setVariant(VARIANT_OPTIONS[0]);
                     }}
